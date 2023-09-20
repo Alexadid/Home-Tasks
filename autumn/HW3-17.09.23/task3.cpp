@@ -5,8 +5,8 @@
 #include <ctime>
 
 // Объявление функция
-void printArray(const std::vector<int>& arr);
-std::vector<int> generateRandomArray(int size, int minRange, int maxRange);
+void printArray(const std::vector<int>&);
+std::vector<int> generateRandomArray(int, int, int);
 
 // Лямбда-выражения для сортировка по возрастнаию и убыванию соответственно
 auto ascendingSort = [](int a, int b)

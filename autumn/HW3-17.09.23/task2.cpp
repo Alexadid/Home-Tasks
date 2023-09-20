@@ -4,9 +4,9 @@
 #include <ctime>
 
 // Заранее объявляем функции
-std::vector<int> generateRandomArray(int size, int minRange, int maxRange);
-void merge(std::vector<int>& arr, int left, int middle, int right, std::vector<int>& temp);
-void mergeSort(std::vector<int>& arr, int left, int right, std::vector<int>& temp);
+std::vector<int> generateRandomArray(int, int, int);
+void merge(std::vector<int>&, int, int, int, std::vector<int>&);
+void mergeSort(std::vector<int>&, int, int, std::vector<int>&);
 
 int main()
 {
@@ -48,7 +48,7 @@ std::vector<int> generateRandomArray(int size, int minRange, int maxRange)
     
     std::vector<int> arr(size);
 
-    for (size_t i = 0; i < size; ++i)
+    for (int i = 0; i < size; ++i)
     {
         arr[i] = rand() % (maxRange - minRange + 1) + minRange;
     }
@@ -63,7 +63,7 @@ void merge(std::vector<int>& arr, int left, int middle, int right, std::vector<i
     int sizeOfSecondArr = right - middle;
 
     // Копируем данные из исходного массива в временный
-    for (size_t i = 0; i < sizeOfFirstArr; i++)
+    for (int i = 0; i < sizeOfFirstArr; i++)
     {
         temp[i] = arr[left + i];
     }

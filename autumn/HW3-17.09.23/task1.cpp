@@ -2,7 +2,7 @@
 #include <vector>
 
 // Объявдение функции производим заранее
-unsigned long long fibonacciNumber(int n, std::vector<unsigned long long>& memory);
+unsigned long long fibonacciNumber(int, std::vector<unsigned long long>&);
 
 int main()
 {
