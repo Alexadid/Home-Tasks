@@ -2,7 +2,6 @@
 #include <string>
 #include <ctime>
 
-// Define the Spacecraft structure
 // Определение структуры Spacecraft
 struct Spacecraft
 {
@@ -46,8 +45,8 @@ struct Spacecraft
         std::cout << "Status: " << (isOperational ? "Operational" : "Not Operational") << std::endl;
     }
 
-    // Перегрузка оператор равенства, чтобы сравнить космические аппараты по имени
-    // Не лучшая практика в современном C++, но показательно
+    // Перегрузка оператора равенства, чтобы сравнить космические аппараты по имени
+    // Не лучшая практика в современном C++, но показательна
     bool operator == (const Spacecraft& other)
     {
         return name == other.name;
@@ -58,13 +57,15 @@ int main()
 {
     // Создаём 2 объекта структуры Spacecraft
     Spacecraft venera("Venera 3", "Lander Probe", 1965, 11, 16, false);
+    // здесь же можно отметить, что часть параметров может иметь значение по умолчанию 
     Spacecraft voyager("Voyager 1", "Interstellar Probe", 1977, 9, 5);
 
-    // Отображаем информацию о них
+    // Отображаем информацию об аппаратах
     venera.displayInfo();
     voyager.displayInfo();
 
     // Проверяем одинаковые ли имена у 2 космических аппаратов
+    // В нашем случае, очевидно, нет
     if (venera == voyager)
     {
         std::cout << "These spacecraft have the same name." << std::endl;
