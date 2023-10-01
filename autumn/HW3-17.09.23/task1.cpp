@@ -1,58 +1,121 @@
 #include <iostream>
 #include <vector>
 
-// Объявдение функции производим заранее
-unsigned long long fibonacciNumber(int, std::vector<unsigned long long>&);
+std::vector<std::vector<unsigned long long>> matrixMultiply(
+    const std::vector<std::vector<unsigned long long>>&,
+    const std::vector<std::vector<unsigned long long>>&);
+
+std::vector<std::vector<unsigned long long>> matrixPower(
+    const std::vector<std::vector<unsigned long long>>&,
+    unsigned long long);
+
+unsigned long long calculateNthFibonacci(int);
+
+// Провёл оптимизацию вычисления чисел Фибоначчи
+// Вместо вычисления за O(2^N) - рекурсия
+// Вычисляет за O(log N)
+// Подробности в комментариях к самим функциям...
 
 int main()
 {
-    int n;
+    int nthPosition;
 
     // Ожидаем получить от пользователя номер числа Фибоначчи, который будем затем вычислять
     std::cout << "Enter the position of the Fibonacci number to calculate: ";
-    std::cin >> n;
+    std::cin >> nthPosition;
 
     // Хотя числа Фибоначчи могут быть рекурсивно определены для отрицательных чисел,
     // в данном примере мы вычисляем классические числа Фибоначчи
-    if (n < 0)
+    if (nthPosition < 0)
     {
         std::cout << "Please enter a non-negative integer.\n";
+    } else if (nthPosition > 92)
+    {
+        // Так как при реализации матричного умножения прибегнул к использованию вычислений по модулю,
+        // то полученное число Фибоначчи должно состоять из не более 20 цифр
+        std::cout << "Sorry, but this program cannot compute such a large Fibonacci numer.\n";
     } else
     {
-        // Создаём вектор для хранения вычисленных чисел Фибоначчи
-        std::vector<unsigned long long> memory(n + 1, 0);
-
         // Вычисляем и выводим n-ое число Фибоначчи
-        unsigned long long result = fibonacciNumber(n, memory);
-        std::cout << "Fibonacci number at position " << n << " is: " << result << std::endl;
+        unsigned long long nthFibonacci = calculateNthFibonacci(nthPosition);
+        std::cout << "Fibonacci number at position " << nthPosition << " is: " << nthFibonacci << std::endl;
     }
 
     return 0;
 }
 
-// Функция для вычилсения числе Фибоначчи, адаптирована для вычисления более крупных чисел Фибоначчи
-// Вектор memory служит для зранения уже вычисленных чисел, что предотвращает перевчсиление одного
-// и того же значения несколько разв ходе рекурсии
-// Стоит отметить, что за счёт этой адаптации вычисляет маленькие числа несколько медленнее,
-// ввиду обращений к вектору
-unsigned long long fibonacciNumber(int n, std::vector<unsigned long long>& memory)
+// Функция для перемножения матриц 2x2
+std::vector<std::vector<unsigned long long>> matrixMultiply(
+    const std::vector<std::vector<unsigned long long>>& matrixA,
+    const std::vector<std::vector<unsigned long long>>& matrixB)
 {
-    // Базовый случай для чисел Фибоначчи
-    if (n == 0)
+    unsigned long int mod = 10089886811898868001; // наименьшее 21-значное простое число
+    int size = matrixA.size();
+    std::vector<std::vector<unsigned long long>> result(size, std::vector<unsigned long long>(size, 0));
+    
+    // Выполняем матричное умножение
+    for (int i = 0; i < size; ++i)
     {
-        return 0;
-    } else if (n == 1)
-    {
-        return 1;
+        for (int j = 0; j < size; ++j)
+        {
+            for (int k = 0; k < size; ++k)
+            {
+                // Выполняем операции по модулю, чтобы избежать переполнения
+                result[i][j] = (result[i][j] + (matrixA[i][k] * matrixB[k][j]) % mod) % mod;
+            }
+        }
     }
+    return result;
+}
 
-    // Проверяем вычислено ли и сохранено ли данное число Фибоначчи в memory
-    if (memory[n] != 0)
-    {
-        return memory[n];
+// Функция для возведения матрицы в степень
+std::vector<std::vector<unsigned long long>> matrixPower(
+    const std::vector<std::vector<unsigned long long>>& matrix,
+    unsigned long long exponent)
+{
+    int size = matrix.size();
+    std::vector<std::vector<unsigned long long>> result(size, std::vector<unsigned long long>(size, 0));
+    
+    // Инициализируем результирующую матрицу как единичную матрицу
+    for (int i = 0; i < size; ++i) {
+        result[i][i] = 1;
     }
+    
+    std::vector<std::vector<unsigned long long>> base = matrix;
+    
+    // Выполняем возведение матрицы в степень с использованием
+    // двоичного возведения в степень
+    while (exponent > 0)
+    {
+        if (exponent % 2 == 1)
+        {
+            result = matrixMultiply(result, base);
+        }
+        base = matrixMultiply(base, base);
+        exponent /= 2;
+    }
+    
+    return result;
+}
 
-    // Если не вычислено, рекрусивно вычиляем его, суммирую два предыдущих числа...
-    memory[n] = fibonacciNumber(n - 1, memory) + fibonacciNumber(n - 2, memory);
-    return memory[n];
+// Function to calculate the nth Fibonacci number
+// Функция для вычилсения n-ого числа Фибоначчи (не более чем 92-ого)
+// с использованием возведения матриц в степень
+// вычисляет заданное число за O(log N)
+unsigned long long calculateNthFibonacci(int n)
+{
+    std::vector<std::vector<unsigned long long>> baseMatrix = {{1, 1}, {1, 0}};
+    
+    // Compute the (n-1)th power of the base matrix
+    // Вычисляем n-1 степень базовой матрицы, т.к. согласно тождеству
+    
+    // ┌         ┐ n   ┌                 ┐
+    // │ 1     1 │     │ F_(n+1)     F_n │
+    // │         │  =  │                 │
+    // │ 1     0 │     │ F_n     F_(n-1) │
+    // └         ┘     └                 ┘
+
+    std::vector<std::vector<unsigned long long>> resultMatrix = matrixPower(baseMatrix, n - 1);
+    
+    return resultMatrix[0][0];
 }
