@@ -5,8 +5,8 @@ Spacecraft::Spacecraft(const std::string& _name, const std::string& _mission,
                        int year, int month, int day, bool _isOperational)
     : name(_name), mission(_mission), isOperational(_isOperational)
 {
-    launchDate.tm_year = year - 1900;
-    launchDate.tm_mon = month - 1;
+    launchDate.tm_year = year - 1900; // tm_year - количество лет, прошедших с 1900 года
+    launchDate.tm_mon = month - 1; // (0 = Январь)
     launchDate.tm_mday = day;
     launchDate.tm_hour = 0;
     launchDate.tm_min = 0;
