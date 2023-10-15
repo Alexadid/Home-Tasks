@@ -21,5 +21,9 @@ int main()
         std::cout << "These spacecrafts have different names." << std::endl;
     }
 
+    // Дестомнтрация работы конструктора по умолчанию...
+    auto shuttle = Spacecraft();
+    shuttle.displayInfo();
+
     return 0;
 }
