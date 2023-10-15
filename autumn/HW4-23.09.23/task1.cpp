@@ -4,44 +4,44 @@
 
 struct Spacecraft
 {
-    std::string name;
-    std::string mission;
-    std::tm launchDate{};
-    bool isOperational{true};  // Значение по умолчанию
+    std::string m_name{"Name"};
+    std::string m_mission{"Mission Name"};
+    std::tm m_launchDate{};
+    bool m_isOperational{true};  // Значение по умолчанию
 
     // Конструктор по умолчанию
     Spacecraft() = default;
 
     // Параметризованный конструктор, использующий список инициализации
-    Spacecraft(const std::string& _name, const std::string& _mission, int year, int month, int day, bool _isOperational = true)
-        : name(_name), mission(_mission), isOperational(_isOperational)
+    Spacecraft(const std::string& name, const std::string& mission, int year, int month, int day, bool isOperational = true)
+        : m_name(name), m_mission(mission), m_isOperational(isOperational)
     {
-        launchDate.tm_year = year - 1900;
-        launchDate.tm_mon = month - 1;
-        launchDate.tm_mday = day;
-        std::mktime(&launchDate);
+        m_launchDate.tm_year = year - 1900;
+        m_launchDate.tm_mon = month - 1;
+        m_launchDate.tm_mday = day;
+        std::mktime(&m_launchDate);
     }
 
     // Деструктор (без изменений)
     ~Spacecraft()
     {
-        std::cout << "Spacecraft " << name << " is being destroyed." << std::endl;
+        std::cout << "Spacecraft " << m_name << " is being destroyed." << std::endl;
     }
 
     // Перегрузка оператора равенства, чтобы сравнить космические аппараты по имени (без изменений)
     void displayInfo()
     {
-        std::cout << "Spacecraft Name: " << name << std::endl;
-        std::cout << "Mission: " << mission << std::endl;
-        std::cout << "Launch Date: " << launchDate.tm_year + 1900 << "-"
-                  << launchDate.tm_mon + 1 << "-" << launchDate.tm_mday << std::endl;
-        std::cout << "Status: " << (isOperational ? "Operational" : "Not Operational") << std::endl;
+        std::cout << "Spacecraft Name: " << m_name << std::endl;
+        std::cout << "Mission: " << m_mission << std::endl;
+        std::cout << "Launch Date: " << m_launchDate.tm_year + 1900 << "-"
+                  << m_launchDate.tm_mon + 1 << "-" << m_launchDate.tm_mday << std::endl;
+        std::cout << "Status: " << (m_isOperational ? "Operational" : "Not Operational") << "\n" << std::endl;
     }
 
     // Перегрузка оператора равенства, чтобы сравнить космические аппараты по имени (без изменений)
     bool operator == (const Spacecraft& other)
     {
-        return name == other.name;
+        return m_name == other.m_name;
     }
 };
 
@@ -65,6 +65,10 @@ int main()
     {
         std::cout << "These spacecraft have different names." << std::endl;
     }
+
+    // Демонстрация работы конструктора по умолчанию
+    Spacecraft shuttle{};
+    shuttle.displayInfo();
 
     return 0;
 }
