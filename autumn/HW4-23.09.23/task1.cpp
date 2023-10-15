@@ -67,7 +67,7 @@ int main()
     }
 
     // Демонстрация работы конструктора по умолчанию
-    Spacecraft shuttle{};
+    auto shuttle = Spacecraft();
     shuttle.displayInfo();
 
     return 0;
