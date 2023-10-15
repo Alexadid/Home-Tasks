@@ -8,7 +8,7 @@ const double ElementaryParticle::csgToSiCharge = 2997924580.0;
 const double ElementaryParticle::csgToSiSpin = 1e7;
 
 ElementaryParticle::ElementaryParticle(double mass, double lifetime, double charge, double spin, const std::string& name, MeasurementSystem units)
-    : m_name(name)
+    : m_name{name}
 {
     // Используем сеттеры для создания объекта класса
     setMass(mass, units);
