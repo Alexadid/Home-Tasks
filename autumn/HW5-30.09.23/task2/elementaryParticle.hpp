@@ -18,18 +18,18 @@ public:
     static const double csgToSiLifetime;
     static const double csgToSiCharge;
     static const double csgToSiSpin;
-    
-    // Конструктор для СГС (или CGS, если по-английски)
-    ElementaryParticle(double massCGS, double lifetimeCGS, double chargeCGS, double spinCGS, const std::string& name);
-    
-    // Конструктор для СИ
-    ElementaryParticle(double massSI, double lifetimeSI, double chargeSI, double spinSI, const std::string& name, MeasurementSystem units);
-    
+
+    // Конструктор по умолчанию
+    ElementaryParticle() = default;
+
+    // Параметризованный констурктор
+    ElementaryParticle(double mass, double lifetime, double charge, double spin, const std::string& name, MeasurementSystem units);
+
     // Геттеры
     double getMass(MeasurementSystem units) const; // масса
     double getLifetime(MeasurementSystem units) const; // средняя продолжительность жизни частицы
     double getCharge(MeasurementSystem units) const; // заряд
-    double getSpin(MeasurementSystem units) const; // спин (здесь единицы, что в СГС, что в СИ одни и те же)
+    double getSpin(MeasurementSystem units) const; // спин (в Дж*с в СИ и в Эрг*с в СГСЭ)
     const std::string& getName() const;
 
     // Сеттеры
@@ -38,22 +38,19 @@ public:
     void setCharge(double charge, MeasurementSystem units);
     void setSpin(double spin, MeasurementSystem units);
 
-    // Функция для печати всей информации о частице
+    // Метод для печати всей информации о частице
     void printInformation(MeasurementSystem units) const;
-    
+
 private:
-    // Приватные данные-члены для обеих сиситем измерений
-    double massCGS;
-    double lifetimeCGS;
-    double chargeCGS;
-    double spinCGS;
-    
-    double massSI;
-    double lifetimeSI;
-    double chargeSI;
-    double spinSI;
-    
-    std::string name;
+    // Приватные данные-члены, всё хранится в СИ
+    // Значения по умолчанию
+    double m_mass{0};
+    double m_lifetime{0};
+    double m_charge{0};
+    double m_spin{0};
+    std::string m_name{"Particle Name"};
+
+    static double convertToCGS(double value, MeasurementSystem units);
 };
 
 #endif
