@@ -8,5 +8,5 @@ Square::Square(double side) : Rectangle(side, side) {}
 // Печатаем информацию о квадрате
 void Square::print() const
 {
-    std::cout << "Square: Side = " << sides[0] << std::endl;
+    std::cout << "Square: Side = " << m_sides[0] << std::endl;
 }

@@ -15,8 +15,8 @@ public:
     void print() const override;
 
 protected:
-    double semiMajor;
-    double semiMinor;
+    double m_semiMajor;
+    double m_semiMinor;
 };
 
 #endif

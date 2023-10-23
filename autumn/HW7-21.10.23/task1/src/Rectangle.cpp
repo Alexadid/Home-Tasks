@@ -8,11 +8,11 @@ Rectangle::Rectangle(double length, double width) : Polygon(new double[2] {lengt
 // Рассчитываем площадь, как произедение длины на ширину
 double Rectangle::getArea() const
 {
-    return sides[0] * sides[1];
+    return m_sides[0] * m_sides[1];
 }
 
 // Печатаем информацию о прямоугольнике
 void Rectangle::print() const
 {
-    std::cout << "Rectangle: Length = " << sides[0] << ", Width = " << sides[1] << std::endl;
+    std::cout << "Rectangle: Length = " << m_sides[0] << ", Width = " << m_sides[1] << std::endl;
 }

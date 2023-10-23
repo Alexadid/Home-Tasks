@@ -3,27 +3,27 @@
 
 
 // Конструктор для хранения сторон и их количества
-Polygon::Polygon(double* sides, int numSides) : sides(new double[numSides]), numSides(numSides)
+Polygon::Polygon(double* sides, int numSides) : m_sides(new double[numSides]), m_numSides(numSides)
 {
     for (int i = 0; i < numSides; i++)
     {
-        this->sides[i] = sides[i];
+        this->m_sides[i] = sides[i];
     }
 }
 
 // Деструктор для очистки аллоцированной памяти
 Polygon::~Polygon()
 {
-    delete[] sides;
+    delete[] m_sides;
 }
 
 // Подсчитываем периметр суммирую длины сторон
 double Polygon::getPerimeter() const
 {
     double perimeter = 0;
-    for (int i = 0; i < numSides; i++)
+    for (int i = 0; i < m_numSides; i++)
     {
-        perimeter += sides[i];
+        perimeter += m_sides[i];
     }
     return perimeter;
 }

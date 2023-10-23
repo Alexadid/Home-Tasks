@@ -13,8 +13,8 @@ public:
     double getPerimeter() const override;
 
 protected:
-    double* sides;
-    int numSides;
+    double* m_sides;
+    int m_numSides;
 };
 
 #endif

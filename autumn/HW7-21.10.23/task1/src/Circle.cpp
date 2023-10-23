@@ -8,5 +8,5 @@ Circle::Circle(double radius) : Ellipse(radius, radius) {}
 // Печатаем информацию о круге
 void Circle::print() const
 {
-    std::cout << "Circle: Radius = " << semiMajor << std::endl;
+    std::cout << "Circle: Radius = " << m_semiMajor << std::endl;
 }
