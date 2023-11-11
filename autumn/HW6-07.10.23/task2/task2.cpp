@@ -1,4 +1,4 @@
-#include "fraction.hpp"
+#include "include/fraction.hpp"
 
 int main()
 {
@@ -92,9 +92,26 @@ int main()
     // Включил boolalpha, чтобы было понятнее, какой резульат
     std::cout << std::boolalpha << "a == b: " << (firstFraction == secondFraction) << std::endl;
     std::cout << std::boolalpha << "a != b: " << (firstFraction != secondFraction) << std::endl;
+    std::cout << std::boolalpha << "a > b: " << (firstFraction > secondFraction) << std::endl;
+    std::cout << std::boolalpha << "a >= b: " << (firstFraction >= secondFraction) << std::endl;
+    std::cout << std::boolalpha << "a < b: " << (firstFraction < secondFraction) << std::endl;
+    std::cout << std::boolalpha << "a <= b: " << (firstFraction <= secondFraction) << std::endl;
 
     // Перевод в double
-    std::cout << "a as a double is " << double(firstFraction);
+    std::cout << "a as a double is " << double(firstFraction) << std::endl;
+
+
+    // А также конструктор из double
+    double doubleForConversion = 0.025;
+    Fraction doubleToFraction(doubleForConversion);
+
+    std::cout << "c = " << doubleForConversion << std::endl;
+    std::cout << "This is c as fraction: " << doubleToFraction << std::endl;
+
+    // std::cout << (doubleToFraction + doubleForConversion) << std::endl;
+    // std::cout << (doubleForConversion + doubleToFraction) << std::endl;
+    
+
 
     return 0;
 }
