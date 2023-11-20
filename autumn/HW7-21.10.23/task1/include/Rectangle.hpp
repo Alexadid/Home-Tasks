@@ -11,7 +11,8 @@ class Rectangle : public Polygon
 public:
     Rectangle(double length, double width);
     double getArea() const override;
-    void print() const override;
+    // Явно переопределяем виртуальную функцию из Shape
+    void print(std::ostream& os) const override;
 };
 
 #endif

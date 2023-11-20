@@ -12,7 +12,8 @@ public:
     Ellipse(double semiMajor, double semiMinor);
     double getArea() const override;
     double getPerimeter() const override;
-    void print() const override;
+    // Явно переопределяем виртуальную функцию из Shape
+    void print(std::ostream& os) const override;
 
 protected:
     double m_semiMajor;

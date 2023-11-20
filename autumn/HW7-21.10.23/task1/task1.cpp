@@ -9,29 +9,22 @@
 
 int main()
 {
-    const int numShapes = 5;
-    Shape* shapes[numShapes];
+    std::vector<Shape*> shapes;
 
     // Создаём различные фигуры и зраним из в массива указателей типа Shape
-    shapes[0] = new Rectangle(5.0, 3.0);
-    shapes[1] = new Square(4.0);
-    shapes[2] = new Ellipse(6.0, 4.0);
-    shapes[3] = new Circle(3.0);
+    shapes.push_back(new Rectangle(5.0, 3.0));
+    shapes.push_back(new Square(4.0));
+    shapes.push_back(new Ellipse(6.0, 4.0));
+    shapes.push_back(new Circle(3.0));
     // Египетский треугольник - для упрощения проверки правильности вычислений
-    shapes[4] = new Triangle(3.0, 4.0, 5.0);
+    shapes.push_back(new Triangle(3.0, 4.0, 5.0));
 
     // Отображаем информацию о каждой фигуре
-    for (int i = 0; i <= numShapes; i++)
+    for (Shape* shape : shapes)
     {
-        shapes[i]->print();
-        std::cout << "Area: " << shapes[i]->getArea() << ", Perimeter: " << shapes[i]->getPerimeter() << "\n";
+        std::cout << *shape << std::endl;
+        std::cout << "Area: " << shape->getArea() << ", Perimeter: " << shape->getPerimeter() << std::endl;
         std::cout << std::endl;
-    }
-
-    // Очистка динамически аллоцированной памяти
-    for (int i = 0; i < numShapes; i++)
-    {
-        delete shapes[i];
     }
 
     return 0;

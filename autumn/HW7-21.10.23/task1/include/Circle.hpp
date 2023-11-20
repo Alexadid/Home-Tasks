@@ -10,7 +10,9 @@ class Circle : public Ellipse
 {
 public:
     Circle(double radius);
-    void print() const override;
+    double getPerimeter() const override;
+    // Явно переопределяем виртуальную функцию из Shape
+    void print(std::ostream& os) const override;
 };
 
 #endif

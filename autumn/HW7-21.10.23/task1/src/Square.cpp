@@ -6,7 +6,7 @@
 Square::Square(double side) : Rectangle(side, side) {}
 
 // Печатаем информацию о квадрате
-void Square::print() const
+void Square::print(std::ostream& os) const
 {
-    std::cout << "Square: Side = " << m_sides[0] << std::endl;
+    os << "Square: Side = " << m_sides[0];
 }

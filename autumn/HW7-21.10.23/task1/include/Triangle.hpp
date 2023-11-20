@@ -12,7 +12,8 @@ class Triangle : public Polygon
 public:
     Triangle(double side1, double side2, double side3);
     double getArea() const override;
-    void print() const override;
+    // Явно переопределяем виртуальную функцию из Shape
+    void print(std::ostream& os) const override;
 };
 
 #endif

@@ -1,29 +1,37 @@
 #include "../include/Polygon.hpp"
+#include <iostream>
 
+// Конструктор для хранения сторон
+Polygon::Polygon(const std::vector<double>& sides) : m_sides(sides) {}
 
+// Деструктор для очистки аллоцированной памяти (не нужен в данном случае, так как используется вектор)
+Polygon::~Polygon() {}
 
-// Конструктор для хранения сторон и их количества
-Polygon::Polygon(double* sides, int numSides) : m_sides(new double[numSides]), m_numSides(numSides)
-{
-    for (int i = 0; i < numSides; i++)
-    {
-        this->m_sides[i] = sides[i];
-    }
-}
-
-// Деструктор для очистки аллоцированной памяти
-Polygon::~Polygon()
-{
-    delete[] m_sides;
-}
-
-// Подсчитываем периметр суммирую длины сторон
+// Подсчитываем периметр
 double Polygon::getPerimeter() const
 {
-    double perimeter = 0;
-    for (int i = 0; i < m_numSides; i++)
+    // Для прямоугольников нам нужно учесть, что две стороны соответственно равны, так что мы корректируем расчёт...
+    if (m_sides.size() == 2)
     {
-        perimeter += m_sides[i];
+        return 2 * (m_sides[0] + m_sides[1]);
+    } else
+    {
+        double perimeter = 0;
+        for (double side : m_sides)
+        {
+            perimeter += side;
+        }
+        return perimeter;
     }
-    return perimeter;
+}
+
+void Polygon::print(std::ostream& os) const
+{
+    os << "Polygon: Sides = ";
+
+    for (size_t i = 0; i < m_sides.size(); ++i)
+    {
+        os << m_sides[i];
+        if (i < m_sides.size() - 1) { os << ", "; }
+    }
 }

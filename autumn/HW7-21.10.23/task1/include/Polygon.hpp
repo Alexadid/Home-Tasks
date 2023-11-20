@@ -1,20 +1,22 @@
 #ifndef POLYGON_HPP
 #define POLYGON_HPP
 #include "Shape.hpp"
+#include <vector>
 
 
 
-// Базовый класс для многоульников
+// Базовый класс для многоугольников
 class Polygon : public Shape
 {
 public:
-    Polygon(double* sides, int numSides);
+    Polygon(const std::vector<double>& sides);
     ~Polygon();
     double getPerimeter() const override;
+    // Явно переопределяем виртуальную функцию из Shape
+    void print(std::ostream& os) const override;
 
 protected:
-    double* m_sides;
-    int m_numSides;
+    std::vector<double> m_sides;
 };
 
 #endif

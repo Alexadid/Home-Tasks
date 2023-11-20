@@ -19,7 +19,7 @@ double Ellipse::getPerimeter() const
 }
 
 // Печатаем информацию об эллипсе
-void Ellipse::print() const
+void Ellipse::print(std::ostream& os) const
 {
-    std::cout << "Ellipse: Semi-Major Axis = " << m_semiMajor << ", Semi-Minor Axis = " << m_semiMinor << std::endl;
+    os << "Ellipse: Semi-Major Axis = " << m_semiMajor << ", Semi-Minor Axis = " << m_semiMinor;
 }

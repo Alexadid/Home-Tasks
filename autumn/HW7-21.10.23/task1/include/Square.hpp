@@ -10,7 +10,8 @@ class Square : public Rectangle
 {
 public:
     Square(double side);
-    void print() const override;
+    // Явно переопределяем виртуальную функцию из Shape
+    void print(std::ostream& os) const override;
 };
 
 #endif

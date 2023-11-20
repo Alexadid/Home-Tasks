@@ -1,12 +1,19 @@
 #include "../include/Circle.hpp"
+#include <cmath>
 
 
 
 // Конструктор для создания круга с радиусом
 Circle::Circle(double radius) : Ellipse(radius, radius) {}
 
-// Печатаем информацию о круге
-void Circle::print() const
+// Рассчитываем периметр круга
+double Circle::getPerimeter() const
 {
-    std::cout << "Circle: Radius = " << m_semiMajor << std::endl;
+    return 2 * M_PI * m_semiMajor;
+}
+
+// Печатаем информацию о круге
+void Circle::print(std::ostream& os) const
+{
+    os << "Circle: Radius = " << m_semiMajor;
 }
