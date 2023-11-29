@@ -18,7 +18,7 @@ void accessOutOfRangeElement()
     int numbers[] = {1, 2, 3};
     // Массив длины 3, а пытаемся обратиться к 5-ому элементу
     size_t index = 5;
-    if (index < 0 || index >= sizeof(numbers) / sizeof(numbers[0]))
+    if (index < 0 || index >= std::size(numbers))
     {
         throw std::out_of_range("Array index is out of range.");
     }
@@ -29,7 +29,7 @@ void accessOutOfRangeElement()
 void triggerRuntimeError()
 {
     int* ptr = nullptr;
-    if (ptr == nullptr)
+    if (ptr)
     {
         throw std::runtime_error("Pointer is null.");
     }
