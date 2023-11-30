@@ -1,89 +1,73 @@
-#include "include/Fraction.hpp"
-#include <sstream>
+#include "include/dataCollection.hpp"
 
 int main()
 {
-    const int numerator1 = 3;
-    const int numerator2 = 5;
-    const int denominator1 = 1;
-    const int denominator2 = 2;
-    const int zeroNum = 0;
-
-    // Проверка на деление на ноль в конструкторе
     try
     {
-        Fraction fraction(numerator1, zeroNum);
-    }
-    catch (const std::runtime_error& error)
+        // Создаём объект DataCollection с размером массива, превышающим лимит
+        int sizeOfArray1 = 150;
+        int sizeOfArray2 = 50;
+        std::string nameOfDataCollection = "ExceedingSize";
+        DataCollection collectionWithExceedingSize(sizeOfArray1, sizeOfArray2, nameOfDataCollection);
+
+        // Соответственно, эта строка не будет достигнута, т.к. конструктор выбросит исключение
+        std::cout << collectionWithExceedingSize << std::endl;
+
+        // Дальше в том числе демонстрируется стратегия от частного к общему
+    } catch (const NegativeArraySizeException& e)
     {
-        std::cerr << "Error: " << error.what() << std::endl;
+        // Вначале предполагаем наиболее частный случай в виде попытки создать массив отрицательной длины
+        std::cerr << "Caught NegativeArraySizeException: " << e.what() << std::endl;
+    } catch (const SizeLimitExceededException& e)
+    {
+        // Затем предпоалагаем более общий случай в виде превышение лимита на длину массива
+        std::cerr << "Caught SizeLimitExceededException: " << e.what() << std::endl;
+    } catch (const DataCollectionException& e)
+    {
+        // Пытаемся поймать более общую ошибку общую для нашего класса
+        std::cerr << "Caught DataCollectionException: " << e.what() << std::endl;
+    } catch (const std::exception& e)
+    {
+        // Здесь пытаемся поймать наиболее общую ошибку, если предыдущие не получилось
+        std::cerr << "Caught std::exception: " << e.what() << std::endl;
     }
 
-    // Проверка на деление на ноль при делении дробей
     try
     {
-        Fraction fraction1(numerator1, denominator1);
-        Fraction fraction2(zeroNum, denominator1);
-        Fraction result = fraction1 / fraction2;
-    }
-    catch (const std::runtime_error& error)
-    {
-        std::cerr << "Error: " << error.what() << std::endl;
-    }
+        // На этот раз создаём объект класса DataCollection с верными параметрами
+        int sizeOfArray1 = 50;
+        int sizeOfArray2 = 30;
+        std::string nameOfDataCollection = "ValidCollection";
+        DataCollection validCollection(sizeOfArray1, sizeOfArray2, nameOfDataCollection);
 
-    const unsigned int nearOverflowNominator = std::numeric_limits<int>::max() - 1;
+        // Тут пытаемся получить доступ к элементу, который лежит в пределах массива
+        int value = validCollection[10];
 
-    // Проверка на переполнение при умножении
-    try
-    {
-        Fraction fraction3(nearOverflowNominator, denominator2);
-        Fraction result = fraction3 * fraction3;
-    }
-    catch (const std::runtime_error& error)
-    {
-        std::cerr << "Error: " << error.what() << std::endl;
-    }
+        // В свою очередь, здесь пытаемся получить доступ к элементу с несуществующим индексом
+        // Соответственно, будет выброшена ошибка IndexOutOfBoundsException
+        value = validCollection[100];
 
-    const std::string incorrectNumeratorFraction = "abc/2";
+        // Очевидно, эта строка не будет достигнута...
+        std::cout << validCollection << std::endl;
 
-    // Проверка на некорректный ввод через оператор '<<' числителя
-    try
+        // Опять идём от частного к общему
+    } catch (const NegativeNumberIndexingException& e)
     {
-        Fraction fraction4;
-        std::istringstream invalidInput(incorrectNumeratorFraction);
-        invalidInput >> fraction4;
+        // Предпоалагаем попытку обращения по отрицательному индексу
+        std::cerr << "Caught NegativeNumberIndexingException: " << e.what() << std::endl;
     }
-    catch (const std::runtime_error& e)
+    catch (const IndexOutOfBoundsException& e)
     {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
-
-    const std::string incorrectDenominatorFraction = "2/abc";
-
-    // Проверка на некорректный ввод через оператор '<<' знаменателя
-    try
+        // Более общая ошибка в виде индекса за пределами массива
+        std::cerr << "Caught IndexOutOfBoundsException: " << e.what() << std::endl;
+    } catch (const DataCollectionException& e)
     {
-        Fraction fraction5;
-        std::istringstream divisionByZeroInput(incorrectDenominatorFraction);
-        divisionByZeroInput >> fraction5;
-    }
-    catch (const std::runtime_error& e)
+        // Ещё более общая ошибка, но всё ещё специфичная для нашего класса
+        std::cerr << "Caught DataCollectionException: " << e.what() << std::endl;
+    } catch (const std::exception& e)
     {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
-
-    const std::string zeroDenominatorFraction = "2/0";
-
-    // Проверка на ввод 0 вместо знаменателя
-    try
-    {
-        Fraction fraction6;
-        std::istringstream divisionByZeroInput(zeroDenominatorFraction);
-        divisionByZeroInput >> fraction6;
-    }
-    catch (const std::runtime_error& e)
-    {
-        std::cerr << "Error: " << e.what() << std::endl;
+        // И наболее общая ошибка
+        std::cerr << "Caught std::exception: " << e.what() << std::endl;
     }
 
     return 0;
