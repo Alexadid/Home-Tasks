@@ -29,19 +29,37 @@ public:
 
     // Конструктор из сырого указателя
     //Иинициализирует общий указатель с помощью сырого указателя
-    explicit shared_ptr(T* ptr) : control_block(new ControlBlock(ptr)) {}
+    // Конструктор из сырого указателя
+    explicit shared_ptr(T* ptr) : control_block(nullptr)
+    {
+        // Проверяем, не равен ли ptr nullptr перед созданием контрольного блока
+        if (ptr) { control_block = new ControlBlock(ptr); }
+    }
 
     // Конструктор из unique_ptr
-    // Инициализирует общий указатель unique_ptr
-    explicit shared_ptr(std::unique_ptr<T> ptr) : control_block(new ControlBlock(ptr.release())) {}
+    // Принимает std::unique_ptr<T> и перемещает владение ресурсом,
+    // обеспечивая, что unique_ptr больше не управляет объектом.
+    explicit shared_ptr(std::unique_ptr<T>&& ptr) : control_block(nullptr)
+    {
+        // Проверяем, не равен ли уникальный указатель nullptr
+        if (ptr)
+        {
+            // 'release' освобождает ресурс из unique_ptr и предотвращает его удаление
+            control_block = new ControlBlock(ptr.release());
+        }
+    }
 
     // Копирующий конструктор
     // Создаёт shared_ptr, который делит право на ресурс с 'other'
     shared_ptr(const shared_ptr& other) : control_block(other.control_block)
     {
-        if (control_block)
+        if (this != &other)
         {
-            control_block->count++; // Увеличиваем счётчик объектов, делящих ресурс...
+            if (control_block)
+            {
+                // Увеличиваем счётчик объектов, делящих ресурс...
+                control_block->count++;
+            }
         }
     }
 
@@ -49,26 +67,51 @@ public:
     // Создаёт shared_ptr, получая ресурс от 'other'
     shared_ptr(shared_ptr&& other) noexcept : control_block(nullptr)
     {
-        swap(other); // Swap'аем содержимое с 'other'
+        if (this != &other)
+        {
+            // Swap'аем содержимое с 'other'
+            swap(other);
+        }
     }
 
     // Копирующий оператор присвоения
     // Назначает совместное владение от 'other' к *этому
     shared_ptr& operator=(const shared_ptr& other)
     {
-        shared_ptr temp(other); // Копируем 'other'
-        swap(temp);             // Swap'аем содержимое с 'temp'
+        // Проверка на самоприсвоение
+        if (this != &other)
+        {
+            // Очищаем текущий ресурс, если таковой имеется
+            reset();
+            // Копируем данные из 'other'
+            control_block = other.control_block;
+            if (control_block)
+            {
+                // Увеличиваем счётчик ссылок
+                control_block->count++;
+            }
+        }
         return *this;
     }
 
+
     // Перемещаюзий оператор присвоения
     // Назначает совместное владение путём приобретения ресурса у 'other'
-    /* Вот этот комментарий нужно исправить, получилось совсем коряво. Я же сам потом не пойму..! */
     shared_ptr& operator=(shared_ptr&& other) noexcept
     {
-        swap(other); // Swap'аем модержимое с 'other'
+        // Проверка на самоприсвоение
+        if (this != &other)
+        {
+            // Очищаем текущий ресурс
+            reset();
+            // Перемещаем ресурс 'other' к текущему объекту
+            control_block = other.control_block;
+            // Обнуляем указатель 'other' для предотвращения двойного освобождения
+            other.control_block = nullptr;
+        }
         return *this;
     }
+
 
     // Деструктор
     // Освобождаем общий ресурс, если это был последний из shared_ptr
@@ -114,7 +157,7 @@ public:
         return *(control_block->ptr);
     }
 
-    // Оператор стрлочка
+    // Оператор стрелочка
     // Предоставляет доступ к элементам управляемого ресурса
     T* operator->() const
     {
