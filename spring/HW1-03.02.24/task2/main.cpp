@@ -41,7 +41,7 @@ public:
     // обеспечивая, что unique_ptr больше не управляет объектом.
     explicit shared_ptr(std::unique_ptr<T>&& ptr) : control_block(nullptr)
     {
-        // Проверяем, не равен ли уникальный указатель nullptr
+        // Проверяем, не равен ли unique_ptr nullptr
         if (ptr)
         {
             // 'release' освобождает ресурс из unique_ptr и предотвращает его удаление
