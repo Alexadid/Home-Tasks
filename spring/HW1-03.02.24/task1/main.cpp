@@ -42,6 +42,8 @@ int main()
     milk->displayCustomers();
     darkMatter->displayCustomers();
 
+    std::cout << std::endl;
+
     // Отображаем, какие продукты купили данные покупатели
     alice->displayPurchasedProducts();
     borya->displayPurchasedProducts();
