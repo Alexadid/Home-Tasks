@@ -8,22 +8,44 @@ int main()
     std::cout << "Expirement 1 has begun." << std::endl; 
 
     // Создаём вектор
-    std::vector<int> vec;
-    // Подсчитываем ёмкость вектора
+    std::vector<int> vect1;
+    // Подсчитываем ёмкость вектора при небольшом изменении
     size_t lastCapacity = 0;
     for (int i = 0; i < 100; ++i)
     {
-        if (vec.capacity() != lastCapacity)
+        if (vect1.capacity() != lastCapacity)
         {
-            std::cout << "Capacity changed: " << vec.capacity() << std::endl;
-            lastCapacity = vec.capacity();
+            std::cout << "Capacity changed: " << vect1.capacity() << std::endl;
+            lastCapacity = vect1.capacity();
         }
-        vec.push_back(i);
+        vect1.push_back(i);
+    }
+
+    
+
+    // Попробуем увеличить ёмкость вектора более, чем в 2 раза за раз
+    std::vector<int> vect2;
+    // Подсчитываем ёмкость вектора при небольшом изменении
+    lastCapacity = 0;
+    for (int i = 0; i < 100; i += 2*i+1)
+    {
+        
+        if (vect2.capacity() != lastCapacity)
+        {
+            std::cout << "Capacity changed: " << vect2.capacity() << std::endl;
+            std::cout << "Size: " << vect2.size() << std::endl;
+            lastCapacity = vect2.capacity();
+        }
+
+        for (int j = 0; j < i; ++j)
+        {
+            vect2.push_back(i);
+        }
     }
 
 
 
-    // Эксперимент 1: Изменение ёмкости вектора при нехватке памяти для размещения новых элементов
+    // Эксперимент 2: Изменение ёмкости вектора при нехватке памяти для размещения новых элементов
     // С ручным резервированием
     std::cout << "Expirement 2 has begun." << std::endl;
 
@@ -38,6 +60,7 @@ int main()
         {
             std::cout << "Capacity changed (with manual reserve): " << vecWithReserve.capacity() << std::endl;
             lastCapacity = vecWithReserve.capacity();
+            
         }
         vecWithReserve.push_back(i);
     }
@@ -81,10 +104,22 @@ Capacity changed: 64
 Capacity changed: 128
 */
 
-// Прекрасно видно, что вектор удваивает всою ёмкость каждый раз, когда ему требуется увеличить размер.
+// Прекрасно видно, что вектор удваивает свою ёмкость каждый раз, когда ему требуется увеличить размер.
 // После прочтения нескольких статей в интернете выяснилось следующее.
 // Точный коэффициент роста не указан стандартом C++ и может отличаться в разных реализациях
 // (например, libc++abi, используемый g++ на mac).
+
+/*
+Capacity changed: 1
+Size: 1
+Capacity changed: 8
+Size: 5
+Capacity changed: 32
+Size: 18
+*/
+
+// Кроме того, в случае libc++abi, если вектору требуется увеличить свою ёмкость более, чем в 2 раза,
+// он увеличивает её до такого значения 2^n, что оно больше (или равно) необходимой для выполнения операции ёмкости
 
 // Эксперимент 2.
 
