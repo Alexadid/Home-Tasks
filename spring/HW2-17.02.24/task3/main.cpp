@@ -35,19 +35,20 @@ void fillContainer(Container& container)
 
 int main()
 {
-    // Создаём контейнеры
-    std::array<int, numberOfElements> dataArray;
-    std::vector<int> dataVector(numberOfElements);
-    std::deque<int> dataDeque(numberOfElements);
-    std::list<int> dataList(numberOfElements);
-    std::forward_list<int> dataForwardList(numberOfElements);
+    // Создаём базовый контейнер, который хранит последовательность чисел,
+    // который заполним все последующие контейнеры
+    std::vector<int> baseVector(numberOfElements);
 
-    // Заполняем контейнеры случайными числами
-    fillContainer(dataArray);
-    fillContainer(dataVector);
-    fillContainer(dataDeque);
-    dataList.assign(dataVector.begin(), dataVector.end());
-    dataForwardList.assign(dataVector.begin(), dataVector.end());
+    // Заполняем базовый контейнер случайными числами
+    fillContainer(baseVector);
+
+    // Создаём тестовые контейнеры и зполняем их полученной последовательностью чисел
+    std::array<int, numberOfElements> dataArray;
+    std::copy(baseVector.begin(), baseVector.end(), dataArray.begin());
+    std::vector<int> dataVector = baseVector;
+    std::deque<int> dataDeque(baseVector.begin(), baseVector.end());
+    std::list<int> dataList(baseVector.begin(), baseVector.end());
+    std::forward_list<int> dataForwardList(baseVector.begin(), baseVector.end());
 
     // Вектор пар "название контейнера" и его "время сортировки"
     // Используется для дальнешего установления самого быстрого контейнера
@@ -93,7 +94,7 @@ int main()
     sortingTimes.emplace_back("Forward List", stopwatch.elapsed<std::chrono::milliseconds>());
 
     // Сортируем контейнеры по их времени сортировки
-    std::sort(sortingTimes.begin(), sortingTimes.end(), [](const auto& a, const auto& b) {
+    std::sort(sortingTimes.begin(), sortingTimes.end(), [](const auto& a, const auto& b){
         return a.second < b.second;
     });
 
@@ -101,7 +102,8 @@ int main()
     std::cout << "+-------------------+--------------+\n";
     std::cout << "| Name of Container | Sorting time |\n";
     std::cout << "+-------------------+--------------+\n";
-    for (const auto& sortingResult : sortingTimes) {
+    for (const auto& sortingResult : sortingTimes)
+    {
         std::cout << "| " << std::setw(17) << std::left << sortingResult.first << " | "
                   << std::setw(9) << std::right << sortingResult.second << " ms |\n";
     }
