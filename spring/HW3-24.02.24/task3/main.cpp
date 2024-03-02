@@ -47,8 +47,6 @@ void fillContainerWithUniqueRandomStrings(Container& container, size_t stringLen
     }
 }
 
-
-
 int main()
 {
     // Общее количество уникальных срок для генерации
@@ -61,17 +59,25 @@ int main()
     // Длина каждой строки 6, т.к. в таком случае мы можем исследовать до 3.08 * 10^8 строк
     fillContainerWithUniqueRandomStrings(strings, 6);
 
+    // Скорее тестовый код, но пусть будет
     std::cout << "Strings have been generated." << std::endl;
 
     // Записывать данные будем в CSV файл
     std::ofstream outputFile("hash_collision_analysis.csv");
     outputFile << "NumberOfStrings,RSHash,JSHash,PJWHash,ELFHash,BKDRHash,SDBMHash,DJBHash,DEKHash,APHash\n";
 
+    // Вектор, хранящий хэши для анализа плотностей
+    std::vector<unsigned int> hashValues[9];
+
     for (size_t numStrings = stepSize; numStrings <= totalNumberOfStrings; numStrings += stepSize)
     {
         std::unordered_map<unsigned int, unsigned int> hashCounts[9];
+        // Clear previous hash values
+        for (int j = 0; j < 9; ++j) {
+            hashValues[j].clear();
+        }
 
-        // Хэшируем каждую строку каждой из исследуемых хэш-функций
+        // Хэшируем каждую строку каждой из исследуемых хэш-функций и сохраняем хэш
         for (size_t i = 0; i < numStrings; ++i)
         {
             // Функции рассчитаны на C-строки, так что переводим в этот формат
@@ -91,6 +97,7 @@ int main()
             for (int j = 0; j < 9; ++j)
             {
                 hashCounts[j][hashes[j]]++;
+                hashValues[j].push_back(hashes[j]);
             }
         }
 
@@ -114,7 +121,21 @@ int main()
     // Закрываем файл
     outputFile.close();
     // Информируем ползователя об окончании записи
-    std::cout << "Data has been written to hash_collision_analysis.csv\n";
+    std::cout << "Collision data has been written to hash_collision_analysis.csv" << std::endl;
+
+    // Сохраняем хэши для анализа плотностей
+    for (int i = 0; i < 9; ++i)
+    {
+        std::ofstream hashFile("hash_values_" + std::to_string(i) + ".csv");
+        for (auto val : hashValues[i])
+        {
+            hashFile << val << "\n";
+        }
+        hashFile.close();
+    }
+
+    // Информируем ползователя об окончании записи
+    std::cout << "Hash values have been written for density analysis." << std::endl;
 
     return 0;
 }
