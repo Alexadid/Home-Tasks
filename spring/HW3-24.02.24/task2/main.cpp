@@ -106,7 +106,7 @@ int main()
 
     for (size_t numStructs = stepSize; numStructs <= totalNumberOfStructs; numStructs += stepSize) 
     {
-        std::cout << numStructs << std::endl;
+        //std::cout << numStructs << std::endl;
 
         std::unordered_map<size_t, unsigned int> hashCounts;
         // Избавляемся от предыдущих хэшей
