@@ -72,8 +72,9 @@ int main()
     for (size_t numStrings = stepSize; numStrings <= totalNumberOfStrings; numStrings += stepSize)
     {
         std::unordered_map<unsigned int, unsigned int> hashCounts[9];
-        // Clear previous hash values
-        for (int j = 0; j < 9; ++j) {
+        // Избавляемся от предыдущих хэшей
+        for (int j = 0; j < 9; ++j)
+        {
             hashValues[j].clear();
         }
 
