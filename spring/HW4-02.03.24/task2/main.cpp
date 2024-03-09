@@ -15,7 +15,7 @@ int main()
     timeFile << "Method,Iterations,Time (ms)" << std::endl;
 
     const int lowerBoundOfRange = 0;
-    const int upperBoundOfRange = 10000;
+    const int upperBoundOfRange = 250;
 
     for (auto& iterations : iterationSteps)
     {
@@ -23,7 +23,7 @@ int main()
         std::random_device rd;
         std::mt19937 mt(rd());
         std::uniform_int_distribution<int> dist(lowerBoundOfRange, upperBoundOfRange);
-        Stopwatch sw;
+        Stopwatch stopWatch;
 
         // Открываем файлы и именуем их соттветственно
         std::string randFileName = "rand_numbers_" + std::to_string(iterations) + ".csv";
@@ -33,38 +33,44 @@ int main()
         std::ofstream randFile(randFileName), mtFile(mtFileName), rdFile(rdFileName);
 
         // Генерируемые числа и измеряем время для rand
-        sw.start();
+        stopWatch.start();
         for(size_t i = 0; i < iterations; ++i)
         {
+            stopWatch.start();
             int number = std::rand() % (upperBoundOfRange + 1);
+            stopWatch.pause();
             randFile << number << std::endl;
         }
-        sw.pause();
-        timeFile << "rand," << iterations << "," << sw.elapsed<std::chrono::milliseconds>() << std::endl;
-        sw.reset();
+        stopWatch.pause();
+        timeFile << "rand," << iterations << "," << stopWatch.elapsed<std::chrono::milliseconds>() << std::endl;
+        stopWatch.reset();
         randFile.close();
 
         // Генерируемые числа и измеряем время для Вихря Мерсена
-        sw.start();
+        stopWatch.start();
         for(size_t i = 0; i < iterations; ++i)
         {
+            stopWatch.start();
             int number = dist(mt);
+            stopWatch.pause();
             mtFile << number << std::endl;
         }
-        sw.pause();
-        timeFile << "mt19937," << iterations << "," << sw.elapsed<std::chrono::milliseconds>() << std::endl;
-        sw.reset();
+        stopWatch.pause();
+        timeFile << "mt19937," << iterations << "," << stopWatch.elapsed<std::chrono::milliseconds>() << std::endl;
+        stopWatch.reset();
         mtFile.close();
 
         // Генерируемые числа и измеряем время для random_device
-        sw.start();
+        stopWatch.start();
         for(size_t i = 0; i < iterations; ++i)
         {
+            stopWatch.start();
             int number = dist(rd);
+            stopWatch.pause();
             rdFile << number << std::endl;
         }
-        sw.pause();
-        timeFile << "random_device," << iterations << "," << sw.elapsed<std::chrono::milliseconds>() << std::endl;
+        stopWatch.pause();
+        timeFile << "random_device," << iterations << "," << stopWatch.elapsed<std::chrono::milliseconds>() << std::endl;
         rdFile.close();
     }
 

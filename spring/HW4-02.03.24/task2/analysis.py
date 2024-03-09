@@ -13,9 +13,9 @@ for method in methods:
     method_times = df_timing[df_timing['Method'] == method]['Time (ms)'].values
     plt.plot(iteration_counts, method_times, label=method, marker='o')
 
-plt.xlabel('Iterations')
-plt.ylabel('Time (ms)')
-plt.title('Execution Time Across Different Iteration Counts')
+plt.xlabel('Итерации')
+plt.ylabel('t, ms')
+plt.title('Время Генерации в Зависимости от Количества Итераций')
 plt.legend()
 #plt.xscale('log')
 #plt.yscale('log')
@@ -29,13 +29,15 @@ for count in iteration_counts:
         try:
             df_values = pd.read_csv(file_name, header=None, names=['Value'])
             plt.figure(figsize=(12, 6))
-            plt.hist(df_values['Value'], bins=250, alpha=0.7, label=f'{method} - {count}')
+            plt.hist(df_values['Value'], bins=251, alpha=0.7, label=f'{method} - {count}')
             
-            plt.xlabel('Generated Number')
-            plt.ylabel('Frequency')
-            plt.title(f'Density Distribution for {method} with {count} Iterations')
+            plt.xlabel('Сгенерированные Числа')
+            plt.ylabel('Частота Их Появлений')
+            plt.title(f'Распределение Частот для {method} с {count} итераций')
             plt.legend()
             plt.grid(True, which="both", ls="--")
+
+            # plt.yscale('log')
             
             # Сохраняем графики в файлы
             plt.savefig(f'density_{method}_{count}.png')
@@ -44,3 +46,21 @@ for count in iteration_counts:
             # На всякий случай проверяем, что файл дейсствительно был
             # Мало ли Вы решите изменить названия...
             print(f'File {file_name} not found. Skipping.')
+
+
+# Очевидным лидером по времени генерации является rand, чего следовало ожидать.
+# Также очевидно и то, что Вихрь Мерсена быстре random_device,
+# т.к. первый считается более эффективным генератором.
+            
+# По поводу рапределений можно сказать лишь то, что все они достаточно быстро приходят к равномерному.
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
