@@ -26,6 +26,8 @@ plt.plot(df['N'], df['Set Insertion Time (μs)'], label='std::Время вст�
 plt.plot(df['N'], df['Vector Insert + Sort Time (μs)'], label='время std::vector + std::sort', marker='x')
 plt.xlabel('Количество элементов N')
 plt.ylabel('Время, μs')
+#plt.yscale('log')
+#plt.xscale('log')
 plt.title('Опыт: время вставок и сортировок')
 plt.legend()
 plt.grid(True)
