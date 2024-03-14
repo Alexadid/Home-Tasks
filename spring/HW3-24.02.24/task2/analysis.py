@@ -21,7 +21,7 @@ df_hash_values = pd.read_csv('hash_values.csv', header=None, names=['HashValue']
 
 # Поступаем также, как и с коллизиями...
 plt.figure(figsize=(12, 6))
-plt.hist(df_hash_values['HashValue'], bins=50, alpha=0.7, label='BoostHash')
+plt.hist(df_hash_values['HashValue'], bins=500, alpha=0.7, label='BoostHash')
 
 plt.xlabel('Hash Value')
 plt.ylabel('Frequency')
