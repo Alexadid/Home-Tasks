@@ -13,16 +13,15 @@
 struct MyStruct
 {
     int intValue;
-    double doubleValue;
     std::string stringValue;
     bool boolValue;
 
     // Конструктор по умолчанию для структуры
-    MyStruct() : intValue(0), doubleValue(0.0), stringValue(""), boolValue(false) {}
+    MyStruct() : intValue(0), stringValue(""), boolValue(false) {}
 
     // И конструктор с возможностью инициализировать поля
     // (исопльзовался в том числе во время тестирования)
-    MyStruct(int i, double d, const std::string& s, bool b) : intValue(i), doubleValue(d), stringValue(s), boolValue(b) {}
+    MyStruct(int i, const std::string& s, bool b) : intValue(i), stringValue(s), boolValue(b) {}
 };
 
 // При помощи boost::hash_combine определим хэш-функцию для нашей структуры
@@ -30,7 +29,6 @@ size_t hash_value(const MyStruct& mStruct)
 {
     size_t seed = 0;
     boost::hash_combine(seed, mStruct.intValue);
-    boost::hash_combine(seed, mStruct.doubleValue);
     boost::hash_combine(seed, mStruct.stringValue);
     boost::hash_combine(seed, mStruct.boolValue);
     return seed;
@@ -44,23 +42,21 @@ void fillContainerWithUniqueRandomMyStructs(Container& container)
     std::random_device randomDevice;
     std::mt19937 generator(randomDevice());
     // Распределения для каждого из полей
-    std::uniform_int_distribution<> intDistribution(0, 100);
-    std::uniform_real_distribution<> doubleDistribution(0.0, 100.0);
+    std::uniform_int_distribution<> intDistribution(0, 99);
     std::uniform_int_distribution<> boolDistribution(0, 1);
     // Символы для будущей генерации поля-строки
     const std::string alphabet = "abcdefghijklmnopqrstuvwxyz";
     std::uniform_int_distribution<> charDistribution(0, alphabet.size() - 1);
 
-    std::set<size_t> uniqueHashes;
+    std::set<std::string> uniqueRepresentations; // For checking uniqueness
 
     for (auto& element : container) 
     {
         MyStruct randomInstance;
-        size_t hash;
+        //size_t hash;
         do
         {
             int intValue = intDistribution(generator);
-            double doubleValue = doubleDistribution(generator);
 
             // Также, как и в задаче 3 генерируем строку длиной 6 символов
             std::string stringValue(6, ' ');
@@ -68,16 +64,18 @@ void fillContainerWithUniqueRandomMyStructs(Container& container)
             {
                 ch = alphabet[charDistribution(generator)];
             }
-
             bool boolValue = boolDistribution(generator);
 
-
-            randomInstance = MyStruct(intValue, doubleValue, stringValue, boolValue);
+            randomInstance = MyStruct(intValue, stringValue, boolValue);
 
             // Подсчитываем хэш для структуры
-            hash = hash_value(randomInstance);
+            //hash = hash_value(randomInstance);
         }
-        while (!uniqueHashes.insert(hash).second);
+        // Для генерации уникальных структур будем преобрахховывать их данные
+        // в строки и пытаться вставить их в set
+        while (!uniqueRepresentations.insert(std::to_string(randomInstance.intValue) + "_" +
+                                             randomInstance.stringValue + "_" +
+                                             std::to_string(randomInstance.boolValue)).second);
 
         element = randomInstance;
     }
@@ -86,9 +84,9 @@ void fillContainerWithUniqueRandomMyStructs(Container& container)
 int main()
 {
     // Общее количество уникальных структур для генерации
-    const size_t totalNumberOfStructs = 1000000;
+    const size_t totalNumberOfStructs = 2000000;
     // Шаг количества структур для исследования коллизий
-    const size_t stepSize = 10000;
+    const size_t stepSize = 25000;
     std::vector<MyStruct> structs(totalNumberOfStructs);
 
     // Генерируем уникальные случайные структуры
