@@ -1,0 +1,22 @@
+{
+"age": 25,
+"height": 5.9,
+"isEmployed": true,
+"name": "John Doe",
+"acquaintances": [
+{
+"age": 30,
+"height": 6.1,
+"isEmployed": false,
+"name": "Alice Smith",
+"acquaintances": []
+},
+{
+"age": 28,
+"height": 5.5,
+"isEmployed": true,
+"name": "Bob Johnson",
+"acquaintances": []
+}
+]
+}
