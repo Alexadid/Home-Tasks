@@ -10,7 +10,7 @@
 struct PersonInfo
 {
     int age;
-    float height;
+    double height;
     bool isEmployed;
     std::string name;
     std::vector<PersonInfo> acquaintances;
@@ -86,9 +86,24 @@ int main()
     createDirectory(dirPath);
 
     // Создаём 3 людей для демонстрации всех возможностей
-    PersonInfo acquaintance1 = {30, 6.1f, false, "Alice Smith", {}};
-    PersonInfo acquaintance2 = {28, 5.5f, true, "Bob Johnson", {}};
-    PersonInfo person = {25, 5.9f, true, "John Doe", {acquaintance1, acquaintance2}};
+    // Решил сразу избавиться от магичсеких чисел, хотя место это занимает порядком...
+    int ageOfPerson1 = 30;
+    double heightOfPerson1 = 170.0;
+    bool isEmployedPerson1 = false;
+    std::string nameOfPerson1 = "Alice";
+    PersonInfo acquaintance1 = {ageOfPerson1, heightOfPerson1, isEmployedPerson1, nameOfPerson1, {}};
+
+    int ageOfPerson2 = 28;
+    double heightOfPerson2 = 199.9;
+    bool isEmployedPerson2 = true;
+    std::string nameOfPerson2 = "Borya";
+    PersonInfo acquaintance2 = {ageOfPerson2, heightOfPerson2, isEmployedPerson2, nameOfPerson2, {}};
+    
+    int ageOfPerson3 = 999;
+    double heightOfPerson3 = 169.8;
+    bool isEmployedPerson3 = true;
+    std::string nameOfPerson3 = "John Doe";
+    PersonInfo person = {ageOfPerson3, heightOfPerson3, isEmployedPerson3, nameOfPerson3, {acquaintance1, acquaintance2}};
 
     // Пытаемся сериализировать и сохранить гланый объект PersonInfo
     if (!serializeAndSavePersonInfo(person, dirPath / "person.json"))
