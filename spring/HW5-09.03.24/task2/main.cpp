@@ -138,14 +138,17 @@ void removeComments(const std::string& inputFile)
                 break;
 
             // Находимся в многострочном комментарии
+            // Находимся в многострочном комментарии
             case ParseState::MultiLineComment:
                 // Проверяем, не закончился ли многострочный комментарий
                 if (currentChar == '*' && file.peek() == '/')
                 {
-                    // Двигаемся за следующий '/'
+                    // Пропускаем следующий символ '/', выходя из комментария
+                    file.get(); // Эта строка потребляет '/' из потока
                     state = ParseState::Normal;
                 }
                 break;
+            
         }
     }
 
