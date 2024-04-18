@@ -22,9 +22,7 @@ std::ptrdiff_t estimate_min_per_thread(std::ptrdiff_t total_elements)
     return calculated_min > 0 ? calculated_min : 1;
 }
 
-// This template function implements a parallel version of std::for_each. It applies a provided
-// function 'func' to each element in the range from 'first' to 'last' by dividing the work
-// into subranges processed in parallel, improving performance on multi-core processors.
+// Функция выполняющая фукнции параллельной версии for_each
 template<typename Iterator, typename Func>
 void parallel_for_each(Iterator first, Iterator last, Func func)
 {
