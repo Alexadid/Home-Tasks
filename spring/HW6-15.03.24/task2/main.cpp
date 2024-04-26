@@ -24,39 +24,17 @@ uintmax_t getEntitySize(const fs::path& path)
     {
         return fs::file_size(path);
     }
-
     // Если это директория, то итерируемся по её содержимомму при помощи directory_iterator
     else if (fs::is_directory(path))
     {
         uintmax_t totalSize = 0;
-        fs::directory_iterator dir_iter(path), end;
-
-        while (dir_iter != end)
+        for (const auto& entry : fs::recursive_directory_iterator(path))
         {
-            fs::directory_entry entry = *dir_iter;
-
-            // Если это файл, то добавляем его размер к totalSize
             if (entry.is_regular_file())
             {
                 totalSize += entry.file_size();
             }
-
-            // Если это директория, то итерируемся по её содержимому (не рекурсивно)
-            else if (entry.is_directory())
-            {
-                fs::directory_iterator sub_dir_iter(entry.path());
-
-                for (const auto& sub_entry : sub_dir_iter)
-                {
-                    if (sub_entry.is_regular_file())
-                    {
-                        totalSize += sub_entry.file_size();
-                    }
-                }
-            }
-            ++dir_iter;
         }
-
         return totalSize;
     } else
     {
